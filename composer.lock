@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "151224ecb5229cefba91b8a2ea484f04",
+    "content-hash": "4e9b454bf43bba76d11466f4d802374f",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -1501,6 +1501,52 @@
             "time": "2018-02-14T22:26:30+00:00"
         },
         {
+            "name": "kornrunner/keccak",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kornrunner/php-keccak.git",
+                "reference": "ad761f528f4d1e3ce378b8a0841e5f82c9973535"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kornrunner/php-keccak/zipball/ad761f528f4d1e3ce378b8a0841e5f82c9973535",
+                "reference": "ad761f528f4d1e3ce378b8a0841e5f82c9973535",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "symfony/polyfill-mbstring": "^1.8"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "~7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "kornrunner\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Boris Momcilovic",
+                    "homepage": "https://github.com/kornrunner/php-keccak"
+                }
+            ],
+            "description": "Pure PHP implementation of Keccak",
+            "keywords": [
+                "keccak",
+                "sha-3",
+                "sha3-256"
+            ],
+            "time": "2018-07-30T22:16:23+00:00"
+        },
+        {
             "name": "larapack/doctrine-support",
             "version": "v0.1.6",
             "source": {
@@ -2158,6 +2204,81 @@
                 "random"
             ],
             "time": "2018-07-04T16:31:37+00:00"
+        },
+        {
+            "name": "pelieth/laravel-ecrecover",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pelieth/laravel-ecrecover.git",
+                "reference": "f2de4700fdd5a906046cb118e9b5fc67864d6e97"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pelieth/laravel-ecrecover/zipball/f2de4700fdd5a906046cb118e9b5fc67864d6e97",
+                "reference": "f2de4700fdd5a906046cb118e9b5fc67864d6e97",
+                "shasum": ""
+            },
+            "require": {
+                "kornrunner/keccak": "^1.0",
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pelieth\\LaravelEcrecover\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Ecrecover functions of Ethereum written for Laravel.",
+            "time": "2018-09-14T17:55:21+00:00"
+        },
+        {
+            "name": "pelieth/laravel-eth-auth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pelieth/laravel-eth-auth.git",
+                "reference": "a6b223517b456f0973f3ddb15cf29b53cfa07626"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pelieth/laravel-eth-auth/zipball/a6b223517b456f0973f3ddb15cf29b53cfa07626",
+                "reference": "a6b223517b456f0973f3ddb15cf29b53cfa07626",
+                "shasum": ""
+            },
+            "require": {
+                "pelieth/laravel-ecrecover": "*",
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Pelieth\\LaravelEthAuth\\EthAuthServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pelieth\\LaravelEthAuth\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Ethereum typed signature verification for Laravel.",
+            "time": "2018-09-14T17:33:38+00:00"
         },
         {
             "name": "psr/container",
@@ -5486,7 +5607,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "pelieth/laravel-eth-auth": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

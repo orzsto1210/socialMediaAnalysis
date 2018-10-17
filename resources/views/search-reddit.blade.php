@@ -19,11 +19,11 @@
 		<th>Author</th>
 		<th>Text</th>
 		<th>Created_at</th>
-		@foreach ($datas as $article)
+		@foreach ($datas as $data)
 		<tr>
-			<td>{{ $article->author }}</td>
-			<td>{{ $article->text }}</td>
-			<td>{{ $article->created_at }}</td>
+			<td>{{ $data->author }}</td>
+			<td>{{ $data->text }}</td>
+			<td>{{ $data->created_at }}</td>
 		</tr>
 		@endforeach
 	</table>

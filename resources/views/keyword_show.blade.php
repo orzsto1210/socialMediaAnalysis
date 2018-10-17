@@ -1,71 +1,287 @@
-@extends('layouts.dashboard')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
+  <head>
 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-	<div class="card-header">
-              <i class="fas fa-chart-area"></i>
-              AI</div>
-    <div class="card-body">
+    <title>Social Media Analysis - Dashboard</title>
 
-	<canvas id="myChart" width="100%" height="30">
-	
+    <!-- Bootstrap core CSS-->
+    <link href="vendor/sb-admin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <!-- Custom fonts for this template-->
+    <link href="vendor/sb-admin/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- Page level plugin CSS-->
+    <link href="vendor/sb-admin/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
-		<script>
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin/sb-admin.css" rel="stylesheet">
 
-			var ctx = document.getElementById('myChart').getContext('2d');
+    <style>
+      body {font-family: Arial;}
 
-			var chart = new Chart(ctx, {
-		    	type: 'bar',
-		    	data: {
-		        	labels: ["2018-05", "2018-06", "2018-07"],
-			        datasets: [{
-			            label: 'Pos',
-			            data: [67.57205773863085, 77.79837000104902, 71.2590571535965],
+      /* Style the tab */
+      .tab {
+          overflow: hidden;
+          border: 1px solid #ccc;
+          background-color: #f1f1f1;
+      }
 
-			            backgroundColor: [
-			                'rgba(255, 99, 132, 0.2)',
-			                'rgba(255, 99, 132, 0.2)',
-			                'rgba(255, 99, 132, 0.2)'
-			                
-			            ],
-			            borderColor: [
-			                'rgba(255,99,132,1)',
-			                'rgba(255,99,132,1)',
-			                'rgba(255,99,132,1)'	 
-			                
-			            ]
+      /* Style the buttons inside the tab */
+      .tab button {
+          background-color: inherit;
+          float: left;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          padding: 10px 9px;
+          transition: 0.3s;
+          font-size: 15px;
+      }
 
-			        },
-			        {
-			            label: 'Neg',
-			            data: [32.427942261369154, 22.201629998950978, 28.7409428464035],
+      /* Change background color of buttons on hover */
+      .tab button:hover {
+          background-color: #ddd;
+      }
 
+      /* Create an active/current tablink class */
+      .tab button.active {
+          background-color: #ccc;
+      }
 
-			            backgroundColor: [
-			                
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)'
-			        
-			            ],
-			            borderColor: [
-			                
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)'
-			                
-			            ]
+      /* Style the tab content */
+      .tabcontent {
+          display: none;
+          padding: 6px 12px;
+          border: 1px solid #ccc;
+          border-top: none;
+      }
+    </style>
+    
+  </head>
 
-			        }]
-			    }
-			});
+  <body id="page-top">
 
-		</script>
-	
-	</canvas>
+    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+      <a class="navbar-brand mr-1" href="{{ url('/') }}">Social Media Analysis</a>
+    </nav>
 
+    <div id="wrapper">
+      <div id="content-wrapper">        
+        <div class="container-fluid">
 
-@endsection
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">{{$keyword}}</li>
+            <li class="breadcrumb-item">{{$start_time}}~{{$end_time}}</li>
+          </ol>
+
+          <div class="row">
+            <div class="col-lg-2">
+              <div class="tab">
+                <button class="tablinks" onclick="openCity(event, 'Day')" id="defaultOpen">Day</button>
+                <button class="tablinks" onclick="openCity(event, 'Week')">Week</button>
+                <button class="tablinks" onclick="openCity(event, 'Month')">Month</button>
+              </div>
+
+              <div id="Day" class="tabcontent">
+                <h4>Day</h4>
+                <form>
+                  <input type="hidden" name="keyword" value="{{$keyword}}">
+                  <input type="hidden" name="filter" value="D">
+                  <p>Start:
+                    <select name="start_time">
+                      @foreach($day_time as $t)
+                        <option value="{{$t->time}}">{{$t->time}}</option>
+                      @endforeach
+                    </select>
+                  </p>
+                  <p>End:
+                      <select name="end_time">
+                      @foreach($day_time as $t)
+                        <option value="{{$t->time}}">{{$t->time}}</option>
+                      @endforeach
+                      </select>
+                  </p>
+                  <input class="btn btn-primary" type="submit" value="OK">
+                </form>
+              </div>
+
+              <div id="Week" class="tabcontent">
+                <h4>Week</h4>
+                <form>
+                  <input type="hidden" name="keyword" value="{{$keyword}}">
+                  <input type="hidden" name="filter" value="W">
+                  <p>Start:
+                    <select name="start_time">
+                      @foreach($week_time as $t)
+                        <option value="{{$t->time}}">{{$t->time}}</option>
+                      @endforeach
+                    </select>
+                  </p>
+                  <p>End:
+                    <select name="end_time">
+                      @foreach($week_time as $t)
+                        <option value="{{$t->time}}">{{$t->time}}</option>
+                      @endforeach
+                    </select>
+                  </p>
+                  <input class="btn btn-primary" type="submit" value="OK">
+                </form>
+              </div>
+
+              <div id="Month" class="tabcontent">
+                <h4>Month</h4>
+                <form>
+                  <input type="hidden" name="keyword" value="{{$keyword}}">
+                  <input type="hidden" name="filter" value="M">
+                  <p>Start:
+                    <select name="start_time">
+                      @foreach($month_time as $t)
+                        <option value="{{$t->time}}">{{$t->time}}</option>
+                      @endforeach
+                    </select>
+                  </p>
+                  <p>End:
+                    <select name="end_time">
+                      @foreach($month_time as $t)
+                        <option value="{{$t->time}}">{{$t->time}}</option>
+                      @endforeach
+                    </select>
+                  </p>
+                  <input class="btn btn-primary" type="submit" value="OK">
+                </form>
+              </div>
+            </div>
+            <!-- Senti Chart-->
+            <!-- Reddit -->
+            <div class="col-lg-5">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h3>Sentiment - Reddit - {{$keyword}}</h3>
+                </div>
+                <div id="senti_reddit" style="width:auto;height:400px;"></div>
+              </div>
+            </div>
+            <!-- Twitter -->
+            <div class="col-lg-5">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h3>Sentiment - Twitter - {{$keyword}}</h3>
+                </div>
+                <div id="senti_twitter" style="width:auto;height:400px;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Google Trend Chart -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3>Google Trend - Reddit&Twitter</h3>
+            </div>
+            <div id="google_trend" style="width:auto;height:400px;"></div>
+          </div>
+        </div>       
+      </div>
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+	<!-- script -->
+  <script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+  </script>
+
+	<!-- <script src="https://d3plus.org/js/d3.js"></script> -->
+  <!-- <script src="https://d3plus.org/js/d3plus.js"></script> -->
+  <script src="https://d3plus.org/js/d3plus.v2.0.0-alpha.17.full.min.js"></script>
+
+	<script>
+		var data = {!!$senti_reddit_datas!!};
+    new d3plus.BarChart()
+      .select("#senti_reddit")
+      .data(data)
+      .groupBy("pos_or_neg")
+      .x("time")
+      .y("value")
+      .stacked(true)
+      .barPadding(0)
+      .render();
+	</script>
+
+  <script>
+		var data = {!!$senti_twitter_datas!!};
+    new d3plus.BarChart()
+      .select("#senti_twitter")
+      .data(data)
+      .groupBy("pos_or_neg")
+      .x("time")
+      .y("value")
+      .stacked(true)
+      .barPadding(0)
+      .render();
+	</script>
+
+	<script>
+    var data = {!!$event_datas!!};
+    new d3plus.LinePlot()
+    .select("#google_trend")
+    .data(data)
+    .groupBy("tag")
+    .x("time")
+    .y("Discussion")
+    .shapeConfig({
+      Line: {
+        strokeWidth: 4
+      }
+    })
+    .tooltipConfig({
+      body: function(d) {
+        if ( d.tag == 'twitter' ) {
+          var tokens = d.top_event.split(' ');
+          delete tokens[tokens.length - 1];
+          return "Top_event: " + tokens.join(' ');
+        }
+        else
+          return "Top_event:" + d.top_event;
+      }
+    })
+    .on("click", function(d) {
+      if ( d.tag == 'twitter' ) {
+        var tokens = d.top_event.split(' ');
+        location.href = tokens[tokens.length - 1];
+      }
+      else
+        location.href = '/data_show?event='+ d.top_event;
+    })
+    .timeline("time")
+    .render();
+
+	</script>
+
+  </body>
+
+</html>

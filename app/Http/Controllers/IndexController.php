@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
         $keywords = DB::table('hot_keyword')->get();
-        $authors = DB::table('pagerank')->get();
-        return view('index', compact('keywords', 'authors'));
+        $authors = DB::table('hot_author')->get();
+        return view('index', compact('keywords', 'authors', 'timefilter'));
     }
 
     public function filter(Request $request)
