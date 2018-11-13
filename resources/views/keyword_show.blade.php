@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Social Media Analysis - Dashboard</title>
+    <title>Social Media Analysis</title>
 
     <!-- Bootstrap core CSS-->
     <link href="vendor/sb-admin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -183,7 +183,7 @@
             <div class="card-header">
               <h3>Google Trend - Reddit&Twitter</h3>
             </div>
-            <div id="google_trend" style="width:auto;height:400px;"></div>
+            <div id="google_trend" style="width:auto;height:500px;"></div>
           </div>
         </div>       
       </div>
@@ -228,6 +228,14 @@
       .x("time")
       .y("value")
       .stacked(true)
+      .tooltipConfig({
+          body: function(d) {
+            var table = "<table class='tooltip-table'>";
+            table += "<tr><td class='data'>" + d.value + "%</td></tr>";
+            table += "</table>";
+            return table;
+          }
+      })
       .barPadding(0)
       .render();
 	</script>
@@ -241,12 +249,37 @@
       .x("time")
       .y("value")
       .stacked(true)
+      .tooltipConfig({
+          body: function(d) {
+            var table = "<table class='tooltip-table'>";
+            table += "<tr><td class='data'>" + d.value + "%</td></tr>";
+            table += "</table>";
+            return table;
+          }
+      })
       .barPadding(0)
       .render();
 	</script>
 
 	<script>
+    // const twitterhight = {!!$twitterhight!!}.map( item=> Object.values(item)[0])[0] ;
+    // const reddithight = {!!$reddithight!!}.map( item=> Object.values(item)[0])[0] ;
+    // console.log({!!$end_time!!})
+    const arrayToObject = (array) =>
+      array.reduce((obj) => {
+      obj[item] = item
+      return obj
+    }, {})
+
+    // const event_datas = arrayToObject(event_datas)
+    // console.log(event_datas)
+    // var_dump($event_datas)
+    
     var data = {!!$event_datas!!};
+    for(var i = 0 ; i < data.length ; i++  ) {
+      data[i].Discussion = parseFloat(data[i].Discussion);
+    }
+    
     new d3plus.LinePlot()
     .select("#google_trend")
     .data(data)
@@ -277,11 +310,14 @@
       else
         location.href = '/data_show?event='+ d.top_event;
     })
-    .timeline("time")
     .render();
 
 	</script>
+  
+  
+<!-- {!!$event_datas!!} -->
+
 
   </body>
-
+  
 </html>

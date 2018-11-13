@@ -49,6 +49,7 @@
                      <thead>
                       <tr>
                         <th>Author</th>
+                        <th>Title</th>
                         <th>Text</th>
                         <th>Created_at</th>
                       </tr>
@@ -57,6 +58,7 @@
                        @foreach ($datas as $data)
                         <tr>
                             <td>{{ $data->author }}</td>
+                            <td>{{ $data->title }}</td>
                             <td>{{ $data->text }}</td>
                             <td>{{ $data->created_at }}</td>
                         </tr>

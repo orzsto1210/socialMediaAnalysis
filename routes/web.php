@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'IndexController@show');
+Route::post('/keyword_authors', 'IndexController@keyword_authors');
+Route::post('/author_keywords', 'IndexController@author_keywords');
 // Route::get('/search-keyword', 'KeywordController@searchFromAPI');
 Route::get('/keyword_show', 'KeywordController@detail');
 Route::get('/data_show', 'KeywordController@searchEvent');

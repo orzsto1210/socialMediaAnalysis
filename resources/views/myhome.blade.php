@@ -8,9 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Social Media Analysis</title>
-
+    
     <!-- Bootstrap core CSS-->
     <link href="vendor/sb-admin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -26,7 +28,6 @@
   </head>
 
   <body id="page-top">
-
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
       <a class="navbar-brand mr-1" href="{{ url('/') }}">Social Media Analysis</a>
     </nav>
@@ -45,26 +46,42 @@
 
       <div id="content-wrapper">
         <div class="container-fluid">
-          <!-- Tree map Chart-->
-            <div class="card mb-3">
-              <div class="card-header">
-                <h2>Hot Keyword</h2>
-              </div>
-              <div id="tree_map" style="width:auto;height:300px;"></div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <h2>Hot Keyword</h2>
             </div>
+            <div id="tree_map" style="width:auto;height:450px;"></div>
+          </div>
 
-          <div class="row">
-            <div class="col-lg-10">
+          <div class="row" >
+
+            <div class="col-lg-6">
               <div class="card mb-3">
                 <div class="card-header">
                   <h2>Hot Author</h2>
                 </div>
-                <div id="circle" style="width:auto;height:700px;"></div>
+                <div id="pack" style="width:auto;height:400px;"></div>
               </div>
             </div>
-          </div>
-        </div>
+    
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h2>該作者常發關鍵字</h2>
+                </div>
+                <div id="block" style="width:auto;height:350px;"></div>
+              </div>
+              <div id="detail" style="display:none">
+                <h3><a id="detail_link" href="">more detail...</a></h3>
+              </div>
+              <!-- <div class="card mb-3">
+                <button style="width:auto;height:100px;"></button>
+              </div> -->
+            </div>
 
+          </div>
+
+        </div>
       </div>
       <!-- /.content-wrapper -->
 
@@ -98,7 +115,10 @@
     <script src="https://d3plus.org/js/d3plus-hierarchy.v0.7.full.min.js"></script>
 
     <script>
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
       var data = {!!$keywords!!}
+      var pack = new d3plus.Pack().select("#pack");
+      var block = new d3plus.Treemap().select("#block");
       new d3plus.Treemap()
         .data(data)
         .groupBy("keyword")
@@ -119,30 +139,67 @@
           labelConfig: {
             fontFamily: "serif",
             fontMax: 100
+            // ,
+            // text: function(d) {
+            //   return d.keyword.toUpperCase() ;
+            // }
           }
+          
         })
         .on("click", function(d) {
-            location.href= '/keyword_show?keyword=' + d.keyword
-          })
+          $.ajax({
+            type: "POST",
+            url: '/keyword_authors',
+            data: {_token: CSRF_TOKEN,  word: d.keyword },
+              success: function (data){ 
+                document.getElementById("detail").style.display='block';
+                document.getElementById("detail_link").href = "/keyword_show?keyword=" + d.keyword;
+                keyword_authors(data);
+              },
+              error: function(xhr, ajaxOptions, thrownError){
+                alert(xhr.responseText);
+              }
+          });
+        })
         .time("created_at")
         .sum("count")
         .render();
+        
+
+        function keyword_authors(data){
+          pack
+            .data(data)
+            .groupBy(["parent","id"])
+            .sum("value")
+            .on("click", function(d) {
+              $.ajax({
+                type: "POST",
+                url: '/author_keywords',
+                data: {_token: CSRF_TOKEN,  word: d.id },
+                  success: function (data){ 
+                    author_keywords(data);
+                  },
+                  error: function(xhr, ajaxOptions, thrownError){
+                    alert(xhr.responseText);
+                  }
+              });
+            })
+            .time("time")
+            .render();
+        }
+
+        function author_keywords(data){
+          block
+            .data(data)
+            .groupBy("keyword")
+            .time("time")
+            .sum("value")
+            .render();
+        }
 
     </script>
 
-    <script>
-      //  var data = [
-      //  {"time":"2018-07-01","id":"Apple","value":1.5,"parent":"twitter"},
-      //  {"time":"2018-07-02","id":"Banana","value":1.2,"parent":"twitter"},
-      //  {"time":"2018-07-03","id":"Cat","value":1.3,"parent":"twitter"},
-      //  {"time":"2018-07-04","id":"Dog","value":1.1,"parent":"twitter"},
-      //  {"time":"2018-07-05","id":"Egg","value":1,"parent":"twitter"},
-      //  {"time":"2018-07-01","id":"Food","value":6,"parent":"reddit"},
-      //  {"time":"2018-07-02","id":"Gerge","value":5,"parent":"reddit"},
-      //  {"time":"2018-07-03","id":"Hamburger","value":4,"parent":"reddit"},
-      //  {"time":"2018-07-04","id":"Ice","value":3,"parent":"reddit"},
-      //  {"time":"2018-07-05","id":"Joyce","value":2,"parent":"reddit"}
-      //  ];
+    <!-- <script>
       var data = {!!$authors!!}
       new d3plus.Pack()
         .data(data)
@@ -157,9 +214,59 @@
         })
         .time("time")
         .render();
-
-    </script>
+    </script> -->
 
   </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

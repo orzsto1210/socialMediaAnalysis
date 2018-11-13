@@ -17,12 +17,12 @@
 <div class="container">
 	<table border="1">
 		<th>Author</th>
-		<th>Text</th>
+		<th>Title</th>
 		<th>Created_at</th>
 		@foreach ($datas as $data)
 		<tr>
 			<td>{{ $data->author }}</td>
-			<td>{{ $data->text }}</td>
+			<td>{{ $data->title }}</td>
 			<td>{{ $data->created_at }}</td>
 		</tr>
 		@endforeach
