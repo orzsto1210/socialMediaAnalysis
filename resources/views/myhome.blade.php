@@ -25,6 +25,11 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin/sb-admin.css" rel="stylesheet">
 
+    <style>
+      
+    
+    </style>
+
   </head>
 
   <body id="page-top">
@@ -74,14 +79,10 @@
               <div id="detail" style="display:none">
                 <h3><a id="detail_link" href="">more detail...</a></h3>
               </div>
-              <!-- <div class="card mb-3">
-                <button style="width:auto;height:100px;"></button>
-              </div> -->
             </div>
 
           </div>
-
-        </div>
+          
       </div>
       <!-- /.content-wrapper -->
 
@@ -111,6 +112,7 @@
     <!-- D3 Plus -->
     <!-- <script src="https://d3plus.org/js/d3.js"></script> -->
     <!-- <script src="https://d3plus.org/js/d3plus.js"></script> -->
+    <script src="https://d3js.org/d3.v5.js"></script>
     <script src="https://d3plus.org/js/d3plus.v2.0.0-alpha.17.full.min.js"></script>
     <script src="https://d3plus.org/js/d3plus-hierarchy.v0.7.full.min.js"></script>
 
@@ -118,7 +120,7 @@
       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
       var data = {!!$keywords!!}
       var pack = new d3plus.Pack().select("#pack");
-      var block = new d3plus.Treemap().select("#block");
+      // var block = new d3plus.Treemap().select("#block");
       new d3plus.Treemap()
         .data(data)
         .groupBy("keyword")
@@ -166,9 +168,9 @@
         .render();
         
 
-        function keyword_authors(data){
+        function keyword_authors(_data){
           pack
-            .data(data)
+            .data(_data)
             .groupBy(["parent","id"])
             .sum("value")
             .on("click", function(d) {
@@ -188,9 +190,12 @@
             .render();
         }
 
-        function author_keywords(data){
-          block
-            .data(data)
+        function author_keywords(_data){
+          console.log(_data);
+          d3.select("#block").selectAll("svg").remove();
+          new d3plus.Treemap()
+            .select("#block")
+            .data(_data)
             .groupBy("keyword")
             .time("time")
             .sum("value")

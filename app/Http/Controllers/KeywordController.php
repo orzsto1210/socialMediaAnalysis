@@ -124,16 +124,10 @@ class KeyWordController extends Controller
         if ( empty($reddit_datas)){
             $reddit_datas = [] ;
         }
-
         else {
-
-
             if ( $reddit_datas[0]->MWD == 'W' ){
-
             }
-
-            else{
-
+            else {
                 $i = 0 ;
                 $RScheduleDate = $reddit_datas[$i]->time ;
                 $CurrentDate = $start_time ; 
@@ -169,8 +163,6 @@ class KeyWordController extends Controller
                         $CurrentDate = strtotime('+1 month',$CurrentDate) ;
                         $CurrentDate= date('Y-m-d',$CurrentDate);
                     }
-            
-                    
                 }
 
             }    
@@ -180,14 +172,9 @@ class KeyWordController extends Controller
             $twitter_datas =[] ;
         }
         else {
-
-
             if ( $twitter_datas[0]->MWD == 'W' ){
-
             }
-
-            else{
-
+            else {
                 $i = 0 ;
                 $TScheduleDate = $twitter_datas[$i]->time ;
                 $CurrentDate = $start_time ; 
@@ -247,6 +234,7 @@ class KeyWordController extends Controller
                 'word' => $keyword,
                 'start' => $start_time,
                 'end' => $end_time,
+                'model' => $filter,
             ]
         ]);
         $google_data = (array) json_decode($res->getBody(), true);

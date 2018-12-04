@@ -31,10 +31,6 @@
 
       <a class="navbar-brand mr-1" href="{{ url('/') }}">Social Media Analysis</a>
 
-      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
-        <i class="fas fa-bars"></i>
-      </button>
-
     </nav>
 
     <div id="wrapper">
@@ -74,42 +70,6 @@
     </div>
     <!-- /#wrapper -->
 
-
-
-    <!-- <div id="container">
-        <div class="container-fluid">
-            <div class="card mb-3">
-                <div class="card-header">
-                  <i class="fas fa-table"></i>
-                  Data Table
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                     <thead>
-                      <tr>
-                        <th>Author</th>
-                        <th>Text</th>
-                        <th>Created_at</th>
-                      </tr>
-                     </thead>
-                     <tbody>
-                       @foreach ($datas as $data)
-                        <tr>
-                            <td>{{ $data->author }}</td>
-                            <td>{{ $data->text }}</td>
-                            <td>{{ $data->created_at }}</td>
-                        </tr>
-                        @endforeach
-                     </tbody>
-                        
-                    </table>
-
-
-                </div>
-
-            </div>
-        </div>
-    </div> -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">

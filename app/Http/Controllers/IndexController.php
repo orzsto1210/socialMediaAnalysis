@@ -21,7 +21,7 @@ class IndexController extends Controller
         $word = $request['word'];
          
         $client = new Client();
-        $res = $client->request('GET', 'http://localhost:8000/keyword_authors', [
+        $res = $client->request('GET', 'localhost:8000/keyword_authors', [
             'query' => [
                 'word' => $word,
             ]
@@ -39,8 +39,11 @@ class IndexController extends Controller
         $res = $client->request('GET', 'http://localhost:8000/author_keywords', [
             'query' => [
                 'word' => $word,
-            ]
+            ],
+            'timeout' => 300
         ]);
+        
+
         $list =  json_decode($res->getBody(), true);
         
         return $list;
