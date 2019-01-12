@@ -119,7 +119,10 @@
     <script>
       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
       var data = {!!$keywords!!}
-      var pack = new d3plus.Pack().select("#pack");
+      data.forEach( function(adata) {
+        adata.keyword = adata.keyword.toUpperCase() ;
+      }) ;
+      // var pack = new d3plus.Pack().select("#pack");
       // var block = new d3plus.Treemap().select("#block");
       new d3plus.Treemap()
         .data(data)
@@ -143,7 +146,7 @@
             fontMax: 100
             // ,
             // text: function(d) {
-            //   return d.keyword.toUpperCase() ;
+            //   return d.keyword.charAt(0).toUpperCase() +  d.keyword.substr(1).toLowerCase();
             // }
           }
           
@@ -169,7 +172,9 @@
         
 
         function keyword_authors(_data){
-          pack
+          d3.select("#pack").selectAll("svg").remove();
+          new d3plus.Pack()
+            .select("#pack")
             .data(_data)
             .groupBy(["parent","id"])
             .sum("value")
@@ -191,7 +196,6 @@
         }
 
         function author_keywords(_data){
-          console.log(_data);
           d3.select("#block").selectAll("svg").remove();
           new d3plus.Treemap()
             .select("#block")
@@ -203,23 +207,6 @@
         }
 
     </script>
-
-    <!-- <script>
-      var data = {!!$authors!!}
-      new d3plus.Pack()
-        .data(data)
-        .select("#circle")
-        .groupBy(["parent","id"])
-        .sum("value")
-        .on("click", function(d) {
-          if ( d.parent == undefined )
-            location.href= '/';
-          else
-            location.href= '/author_show?tag=' + d.parent + '&author=' + d.id;
-        })
-        .time("time")
-        .render();
-    </script> -->
 
   </body>
 
